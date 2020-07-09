@@ -1,14 +1,21 @@
 #!/bin/sh
 
-echo do you want to remove everything y/n ??
-echo following files will be removed :
-echo "1. /etc/modprobe.d/vfio.conf "
-echo "2. /etc/modprobe.d/kvm.conf" 
-echo "3. /etc/modprobe.d/blacklist.conf" 
-echo "4. /etc/udev/rules.d/10-qemu-hw-users.rules"
-echo following files will be edited
-echo /etc/default/grub /etc/security/limites.conf
-echo enter 1 to start press any key to exit
+echo "
+do you want to remove everything y/n ??
+
+
+ following files will be removed :
+1. /etc/modprobe.d/vfio.conf 
+2. /etc/modprobe.d/kvm.conf
+3. /etc/modprobe.d/blacklist.conf
+4. /etc/udev/rules.d/10-qemu-hw-users.rules
+
+following files will be edited:
+/etc/default/grub /etc/security/limites.conf
+
+enter 1 to start press any key to exit
+"
+
 read x;
 
 if [ $x -eq 1 ]

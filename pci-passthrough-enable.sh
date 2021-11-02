@@ -1,4 +1,7 @@
 #!/bin/bash
+Gpuid=lspci -nn  | grep nvidia  -i  | cut  -d ' '  -f 15 | sed 's/\[//g;s/\]//g'
+Gupid1= `echo "$Gpuid" |  cut -d ':' -f 1`
+Gupid2= `echo "$Gpuid" |  cut -d ':' -f 2`
 
 echo following files will be created or overwritten if exists:
 echo /etc/modprobe.d/vfio.conf kvm.conf blacklist.conf
@@ -10,7 +13,7 @@ then
 
 cat << EOF > /etc/modprobe.d/vfio.conf
 
-options vfio-pci ids=10de:139b
+options vfio-pci ids="$Gupid"
 options vfio-pci disable_vga=1
 EOF
 #sed 's/10de:139b/$GPU/g' /etc/modprobe.d/vfio.conf
@@ -40,8 +43,8 @@ if  [ $z -eq 'y' ]
 then
 cat << EOF > /etc/udev/rules.d/10-qemu-hw-users.rules
 SUBSYSTEM=="vfio", OWNER="root", GROUP="kvm"
-SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{idProduct}=="c31c" OWNER="root", GROUP="kvm"
-SUBSYSTEM=="usb", ATTR{idVendor}=="046d", ATTR{idProduct}=="c051" OWNER="root", GROUP="kvm"
+SUBSYSTEM=="usb", ATTR{idVendor}=="$Gupid1", ATTR{idProduct}=="$Gupid2" OWNER="root", GROUP="kvm"
+SUBSYSTEM=="usb", ATTR{idVendor}=="$Gupid1", ATTR{idProduct}=="$Gupid2" OWNER="root", GROUP="kvm"
 EOF
 
 #if [[ $(grep "soft memlock"  /etc/security/limits.conf ) -eq NULL  ]] 
